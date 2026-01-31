@@ -27,7 +27,6 @@ func _input(event):
 		camera_mount.rotate_x(deg_to_rad(-event.relative.y*sens_vertical))
 		
 func _physics_process(delta):
-	
 	if !animation_player.is_playing():
 		is_locked = false
 		
@@ -52,7 +51,9 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	#print("hmm")
 	var input_dir := Input.get_vector("left", "right", "forward", "backward")
+	#print(input_dir)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		if !is_locked:

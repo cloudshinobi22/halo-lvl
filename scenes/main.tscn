@@ -1,5 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://ctr8kp1stxn3e"]
+[gd_scene load_steps=17 format=3 uid="uid://ctr8kp1stxn3e"]
 
+[ext_resource type="PackedScene" uid="uid://dsgka4cxr2hdi" path="res://zombie.tscn" id="1_85g3d"]
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://third_person_controller_assets-main/textures/grids/Dark/texture_05.png" id="1_jyhfs"]
 [ext_resource type="Texture2D" uid="uid://b58xv1joypxo5" path="res://third_person_controller_assets-main/textures/grids/Orange/texture_09.png" id="2_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://cm5m7nr7dugjd" path="res://third_person_controller_assets-main/textures/grids/Purple/texture_09.png" id="3_tefeu"]
@@ -7,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://xd754hnigtos" path="res://scenes/player.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://dqph4vh0bp84u" path="res://third_person_controller_assets-main/models/building/wall.glb" id="6_tipki"]
 [ext_resource type="PackedScene" uid="uid://b4ybr41mnn2ep" path="res://third_person_controller_assets-main/models/building/wall_archedwindow_gated.glb" id="7_85g3d"]
-[ext_resource type="PackedScene" uid="uid://5yhvyl2olmk7" path="res://crypto guy.tscn" id="8_choun"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tipki"]
 sky_top_color = Color(4.1392445e-06, 0.916303, 0.5304189, 1)
@@ -27,6 +27,8 @@ glow_enabled = true
 fog_enabled = true
 fog_light_color = Color(8.001737e-07, 0.23321775, 0.13067532, 1)
 fog_density = 0.001
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_tipki"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ya4ey"]
 albedo_texture = ExtResource("1_jyhfs")
@@ -54,24 +56,31 @@ environment = SubResource("Environment_choun")
 
 [node name="map" type="Node3D" parent="."]
 
-[node name="floor" type="CSGBox3D" parent="map"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="map"]
+navigation_mesh = SubResource("NavigationMesh_tipki")
+
+[node name="zombie" parent="map/NavigationRegion3D" instance=ExtResource("1_85g3d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3841858e-07, -0.006937325, 8.878464)
+player_path = NodePath("../../../Player")
+
+[node name="floor" type="CSGBox3D" parent="map/NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.000680536, 0)
 material_override = SubResource("StandardMaterial3D_ya4ey")
 use_collision = true
 size = Vector3(1000, 0.001, 1000)
 
-[node name="small box" type="CSGBox3D" parent="map"]
+[node name="small box" type="CSGBox3D" parent="map/NavigationRegion3D"]
 transform = Transform3D(0.745953, 0, -0.665999, 0, 1, 0, 0.665999, 0, 0.745953, 2.20765, 0.527725, -9.82762)
 material_override = SubResource("StandardMaterial3D_eb6dy")
 use_collision = true
 
-[node name="medium box" type="CSGBox3D" parent="map"]
+[node name="medium box" type="CSGBox3D" parent="map/NavigationRegion3D"]
 transform = Transform3D(0.745953, 0, -0.665999, 0, 1, 0, 0.665999, 0, 0.745953, 6.39475, 1.01874, 4.88886)
 material_override = SubResource("StandardMaterial3D_trceg")
 use_collision = true
 size = Vector3(2, 2, 2)
 
-[node name="large box" type="CSGBox3D" parent="map"]
+[node name="large box" type="CSGBox3D" parent="map/NavigationRegion3D"]
 transform = Transform3D(0.817728, 0, -0.575605, 0, 1, 0, 0.575605, 0, 0.817728, -8.82857, 1.52238, -0.0959167)
 material_override = SubResource("StandardMaterial3D_a8y0u")
 use_collision = true
@@ -119,6 +128,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.092931, 0.010217577, 8.141
 
 [node name="wall_archedwindow_gated3" parent="." instance=ExtResource("7_85g3d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.662485, -0.002668947, 4.5985584)
-
-[node name="untitled" parent="." instance=ExtResource("8_choun")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.557201, 0.0012382863, 4.248506)
